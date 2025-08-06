@@ -18,11 +18,16 @@ jobs:
 
       - name: Run Bazel build using Docker
         run: |
+          # Get current UID/GID for Docker user mapping
+          export UID=$(id -u)
+          export GID=$(id -g)
+          
           docker run \
-            -u root \
+            -e USER=$UID \
+            -u $UID:$GID \
             -v ${{ github.workspace }}:/src/workspace \
-            -v ${{ github.workspace }}/.bazel_output:/bazel_output \
+            -v ${{ github.workspace }}/.bazel_output:/home/bazel_user_output \
             -w /src/workspace \
             gcr.io/bazel-public/bazel:latest \
-            --output_user_root=/bazel_output \
+            --output_user_root=/home/bazel_user_output \
             build //:hello-world
