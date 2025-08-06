@@ -1,0 +1,26 @@
+name: Bazel Hello World
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Run Bazel build using Docker
+        run: |
+          mkdir -p /tmp/build_output
+          
+          docker run \
+            -v ${{ github.workspace }}:/src/workspace \
+            -v /tmp/build_output:/tmp/build_output \
+            -w /src/workspace \
+            gcr.io/bazel-public/bazel:latest \
+            --output_user_root=/tmp/build_output \
+            build //:hello-world
