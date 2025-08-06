@@ -30,4 +30,4 @@ jobs:
             -w /src/workspace \
             gcr.io/bazel-public/bazel:latest \
             --output_user_root=/home/bazel_user_output \
-            build --subcommands --verbose_failures //:hello-world
+            run --subcommands --verbose_failures //:hello-world
