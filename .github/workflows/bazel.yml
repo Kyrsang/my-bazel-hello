@@ -18,13 +18,13 @@ jobs:
 
       - name: Run Bazel build using Docker
         run: |
-          # Get current UID/GID for Docker user mapping
-          export UID=$(id -u)
-          export GID=$(id -g)
+          # Use alternative variable names to avoid conflict
+          USER_ID=$(id -u)
+          GROUP_ID=$(id -g)
           
           docker run \
-            -e USER=$UID \
-            -u $UID:$GID \
+            -e USER=$USER_ID \
+            -u $USER_ID:$GROUP_ID \
             -v ${{ github.workspace }}:/src/workspace \
             -v ${{ github.workspace }}/.bazel_output:/home/bazel_user_output \
             -w /src/workspace \
