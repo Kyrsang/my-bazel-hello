@@ -13,15 +13,16 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Set up output directory
-        run: mkdir -p ${{ github.workspace }}/bazel_output
+      - name: Prepare Bazel output directory
+        run: mkdir -p ${{ github.workspace }}/.bazel_output
 
       - name: Run Bazel build using Docker
         run: |
           docker run \
+            -u root \
             -v ${{ github.workspace }}:/src/workspace \
-            -v ${{ github.workspace }}/bazel_output:/tmp/build_output \
+            -v ${{ github.workspace }}/.bazel_output:/bazel_output \
             -w /src/workspace \
             gcr.io/bazel-public/bazel:latest \
-            --output_user_root=/tmp/build_output \
+            --output_user_root=/bazel_output \
             build //:hello-world
