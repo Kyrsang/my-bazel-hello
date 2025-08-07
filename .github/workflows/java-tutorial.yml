@@ -1,0 +1,32 @@
+name: Bazel Java Tutorial
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare Bazel output directory
+        run: mkdir -p ${{ github.workspace }}/.bazel_output
+
+      - name: Build and Run Bazel target using Docker
+        run: |
+          USER_ID=$(id -u)
+          GROUP_ID=$(id -g)
+
+          docker run \
+            --rm \
+            -u $USER_ID:$GROUP_ID \
+            -v ${{ github.workspace }}/java-tutorial:/src/workspace \
+            -v ${{ github.workspace }}/.bazel_output:/home/bazel_user_output \
+            -w /src/workspace \
+            gcr.io/bazel-public/bazel:latest \
+            --output_user_root=/home/bazel_user_output \
+            run //:ProjectRunner
