@@ -31,4 +31,4 @@ jobs:
             -w /src/workspace \
             gcr.io/bazel-public/bazel:latest \
             --output_user_root=/home/bazel_user_output \
-            run //:ProjectRunner
+            run --java_language_version=11 --java_runtime_version=remotejdk_11 //:ProjectRunner

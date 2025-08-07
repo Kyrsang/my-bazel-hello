@@ -1,7 +1,1 @@
 bazel_dep(name = "rules_java", version = "8.15.0")
-
-java = use_extension("@rules_java//java:extensions.bzl", "java")
-
-java.toolchain(
-    version = "8",
-)
