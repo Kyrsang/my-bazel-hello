@@ -3,7 +3,9 @@ name: Bazel Java Tutorial
 on:
   push:
     branches: [main]
-  pull_request:
+    paths:
+      - 'java-tutorial/**'
+  workflow_dispatch:
 
 jobs:
   build:
